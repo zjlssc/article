@@ -39,9 +39,9 @@ function getSession (key) {
   return JSON.parse(window.sessionStorage.getItem(key))
 }
 setSession('name', 'tom')
-setSession('student', {name: tom,age: 18})
 getSession('name')
 //tom
+setSession('student', {name: tom,age: 18})
 getSession('student')
 //{name: tom,age: 18}
 ```
