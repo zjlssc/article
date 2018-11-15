@@ -1,35 +1,83 @@
 ## js常用方法(待更新)
+#### 检查手机号格式　
+```javascript
+function checkPhone (phone) {
+  if (!(/^1[3|4|5|7|8|9][0-9]\d{8}$/.test(phone))) {
+    return false
+  } else {
+    return true
+  }
+}
 
-
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+checkPhone(18923459876)
+//true
+checkPhone(12398762345)
+//false
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/zjlssc/tools/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+#### 数字格式化成千分位   
+```javascript
+function numToThousand(num) {
+  if (!num) {
+    return 0
+  } else {
+    return (num.toString().indexOf ('.') !== -1) ? num.toLocaleString() : num.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+  }
+}
+numToThousand(9876543)
+// "9,876,543"
+numToThousand(123456.76)
+// "123,456.76"
+```
+#### 设置与获取sessionStorage
+```javascript
+//设置 data格式为json或字符串
+function setSession (key, data) {
+  window.sessionStorage.setItem(key, JSON.stringify(data))
+}
+//获取
+function getSession (key) {
+  return JSON.parse(window.sessionStorage.getItem(key))
+}
+setSession('name', 'tom')
+setSession('student', {name: tom,age: 18})
+getSession('name')
+//tom
+getSession('student')
+//{name: tom,age: 18}
+```
+#### 时间戳转时间 
+```javascript
+function  dateFormat (timestamp) {
+  if (timestamp) {
+    let date = new Date(timestamp)
+    let Y = date.getFullYear()
+    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
+    let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+    let h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+    let m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+    let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+    return Y + '-' + M + '-' + D + ' ' + h + ':' + m + ':' + s
+  } else {
+    return ''
+  }
+}
+dateFormat(1542247446235)
+// "2018-11-15 10:04:06"
+dateFormat(new Date())
+// "2018-11-15 10:05:13"
+```
+#### 从url中获取参数 返回值为一个对象
+```javascript
+function  getRequest () {
+  let url = window.location.href
+  let theRequest = {}
+  if (url.indexOf('?') !== -1) {
+    let str = url.split('?')[1]
+    let strs = str.split('&')
+    for (let i = 0; i < strs.length; i++) {
+      theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+    }
+  }
+  return theRequest
+}
+```
